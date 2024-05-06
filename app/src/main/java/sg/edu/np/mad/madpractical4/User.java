@@ -13,6 +13,18 @@ public class User {
         followed = false;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean getFollowed() {
+        return followed;
+    }
+
     public User(String n, String d, int i, boolean f) {
         name = n;
         description = d;

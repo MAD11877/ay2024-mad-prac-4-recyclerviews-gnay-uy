@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         User user = ListActivity.userList.stream()
                 .filter(u -> u.id == userId)
                 .findFirst()
-                .orElse(new User("john doe", "desc", 0, false));
+                .orElse(new User("John Doe", "MAD Developer", 0, false));
 
         TextView name = findViewById(R.id.textView2);
         TextView desc = findViewById(R.id.textView3);
