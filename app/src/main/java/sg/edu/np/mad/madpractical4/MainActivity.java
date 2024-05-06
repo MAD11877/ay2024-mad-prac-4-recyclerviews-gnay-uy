@@ -1,5 +1,6 @@
 package sg.edu.np.mad.madpractical4;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,18 +23,27 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        User user = new User("John Doe", "MAD Developer", 1, false);
+        Intent intent = getIntent();
+        int userId = intent.getIntExtra("id", 0);
+        User user = ListActivity.userList.stream()
+                .filter(u -> u.id == userId)
+                .findFirst()
+                .orElse(new User("john doe", "desc", 0, false));
+
+        TextView name = findViewById(R.id.textView2);
+        TextView desc = findViewById(R.id.textView3);
+
+        name.setText(user.name);
+        desc.setText(user.description);
         Random random = new Random();
 
         findViewById(R.id.Button1).setOnClickListener(v -> {
             boolean isFollowed = user.followed;
             user.followed = !isFollowed;
-            if (user.followed) {
-                user.followed = false;
+            if (!user.followed) {
                 ((Button) v).setText("UNFOLLOW");
                 Toast.makeText(this, "Followed", Toast.LENGTH_SHORT).show();
             } else {
-                user.followed = true;
                 ((Button) v).setText("FOLLOW");
                 Toast.makeText(this, "Unfollowed", Toast.LENGTH_SHORT).show();
             }
@@ -47,9 +57,8 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     })
                     .setNegativeButton("VIEW", (dialog, which) -> {
-                        TextView x = (TextView)findViewById(R.id.textView2);
                         String text = "MAD " + Math.abs(random.nextInt());
-                        x.setText(text);
+                        name.setText(text);
                     })
                     .create();
 

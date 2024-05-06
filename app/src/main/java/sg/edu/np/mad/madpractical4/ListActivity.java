@@ -10,33 +10,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ListActivity extends AppCompatActivity {
-
+    public static ArrayList<User> userList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list);
 
-        ArrayList<User> userList = new ArrayList<>();
+        Random random = new Random();
+        userList = new ArrayList<>();
 
         for (int i = 0; i < 20; i++) {
             User user = new User();
-            user.name = "Name " + i;
-            user.description = "Description " + i;
+            user.name = "Name " + Math.abs(random.nextInt());
+            user.description = "Description " + Math.abs(random.nextInt());
             user.id = i;
-            user.followed = false;
+            user.followed = random.nextBoolean();
             userList.add(user);
         }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        UserAdapter userAdapter = new UserAdapter(userList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        UserAdapter userAdapter = new UserAdapter(userList, this);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(userAdapter);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
